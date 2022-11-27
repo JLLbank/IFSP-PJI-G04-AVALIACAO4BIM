@@ -1,0 +1,327 @@
+-- Equipe #4
+
+-- Jessica | Lorrany | Luiza | Maria Helena | Nicoly
+
+-- https://www.uuidgenerator.net/
+-- https://site112.com/gerador-hash--
+-- https://www.4devs.com.br/
+
+create database MN;
+use MN;
+
+
+create table Cliente (
+
+	cpf char(11) not null,
+	nome varchar(200) not null,
+	nasc date not null,
+	rg char(9) not null,
+	email varchar(80) not null,
+	telefone char(11) not null,
+	codigo_verificacao char(36) not null,
+	verificado boolean not null default false,
+
+	primary key (cpf)
+);
+
+create table Endereco(
+	
+	codigo int not null,
+	cpf_cliente char(11) not null,
+	logradouro text not null,
+	complemento varchar(10),
+	bairro text not null,
+	cidade text not null,
+	uf char(2) not null,
+	cep char(8) not null,
+	
+	primary key (codigo),
+	foreign key (cpf_cliente) references Cliente (cpf)
+);
+
+create table Conta (
+
+	numero char(7) not null,
+	cpf_cliente char(11) not null,
+	data_criacao datetime not null,
+	ativo boolean not null,
+	senha varchar(36) not null,
+	senha_operacao varchar(36) not null,
+	chave_pix varchar(50),
+   
+	primary key (numero),
+	foreign key (cpf_cliente) references Cliente (cpf)
+);
+
+create table Saldo(
+
+	codigo int not null,
+    saldo decimal not null,
+    numero_conta char(7) not null,
+    cpf_cliente char(11) not null,
+    
+    primary key (codigo),
+    foreign key (numero_conta) references Conta (numero),
+    foreign key (cpf_cliente) references Cliente (cpf)
+);
+
+create table Consulta (
+
+	codigo int not null,
+	numero_conta char(7) not null,
+	data_emissao datetime not null,
+   
+	primary key (codigo),
+	foreign key (numero_conta) references Conta (numero)
+    
+);
+
+create table Pagamento (
+
+	codigo int not null,
+	numero_conta char(7) not null,
+	saldo_apos decimal not null,
+	valor decimal not null,
+	data_pagamento datetime not null,
+	data_vencimento date not null,
+	juros decimal,
+	destino_interno boolean not null,
+	destino_numero_conta char(7) not null,
+   
+	primary key (codigo),
+	foreign key (numero_conta) references Conta (numero)
+);
+
+create table Cadastro_chave_pix (
+
+	codigo int not null,
+	numero_conta char(7) not null,
+	tipo_chave text not null,
+	chave varchar(50) not null,
+   
+	primary key (codigo),
+	foreign key (numero_conta) references Conta (numero)
+);
+
+create table Alteracao_senha (
+
+	codigo int not null,
+	numero_conta char(7) not null,
+	codigo_verificacao char(36) not null,
+	gerado_em datetime not null,
+	utilizado boolean not null default false,
+   
+	primary key (codigo),
+	foreign key (numero_conta) references Conta (numero)
+);
+
+create table Funcionario(
+	
+	codigo int not null,
+	nome varchar(200) not null,
+	nasc date not null,
+	cpf char(11) not null,
+	telefone char(11) not null,
+	email varchar(80) not null,
+	funcao text not null,
+	salario decimal not null,
+	data_contratacao date not null,
+
+	primary key (codigo)
+);
+
+create table Contato (
+
+	codigo int not null,
+	numero_conta char(7) not null,
+	codigo_funcionario int not null,
+
+	primary key (codigo),
+	foreign key (numero_conta) references Conta (numero),
+	foreign key (codigo_funcionario) references Funcionario (codigo)
+	
+);
+
+
+INSERT INTO Cliente VALUES ('99840660888', 'Felipe da Silva e Silva', '2004-06-26', '500487777', 'felipe@email.sql.projeto', '11951491478', 'defda805-b669-4e0e-ba2a-d3d8adbd01b7', true);
+INSERT INTO Cliente VALUES ('24215363837', 'João da Silva e Silva', '2005-10-04', '492534822', 'joao@email.sql.projeto', '11991936486', '7745db05-7edc-44be-8cbb-7f04d231860f', true);
+INSERT INTO Cliente VALUES ('02254935860', 'Julio da Silva e Silva', '2006-02-07', '168258973', 'julio@email.sql.projeto', '11979752691', 'b70cb32a-31b9-4e8e-9f2e-ffd32a803585', true);
+INSERT INTO Cliente VALUES ('15564187873', 'Kauanne da Silva e Silva', '2004-11-24', '278031985' , 'kauanne@email.sql.projeto', '11951633659', '3d464ac6-39c6-4c57-8e6a-79230838066b', true);
+INSERT INTO Cliente VALUES ('22969212803', 'Laís da Silva e Silva', '2005-06-26', '464089359',  'lais@email.sql.projeto', '11965895215', '2920af3f-a418-4c77-b277-fa0ee2843575', true);
+INSERT INTO Cliente VALUES ('28867554867', 'Lie da Silva e Silva', '2005-06-26','326820905', 'lie@email.sql.projeto', '11939393828', '3f19c8a9-a4f0-479a-a6da-8522c850adea', true);
+INSERT INTO Cliente VALUES ('86089150819', 'Maria Eduarda da Silva e Silva', '2006-06-28', '175149872', 'eduarda@email.sql.projeto', '11988315322', 'f4189e72-5fd2-4631-a1e5-c13369c11ee6', true);
+INSERT INTO Cliente VALUES ('81841098817', 'Matheus Augusto da Silva e Silva', '2004-02-20', '113883286', 'm.augusto@email.sql.projeto', '11984640560', '0741fe0a-b4c1-42f5-829f-b10d1fa0b4ad', true);
+INSERT INTO Cliente VALUES ('60254415881', 'Matheus da Silva e Silva', '2006-01-22', '113883286', 'matheus@email.sql.projeto', '11996838920', '733d50d8-b9af-4bcb-bd2f-0a0001a4fab8', true);
+INSERT INTO Cliente VALUES ('36940806865', 'Pedro da Silva e Silva', '2006-02-17', '509664386', 'pedro@email.sql.projeto', '11982470535', '29f6c1ae-0a3a-474c-ac0c-cd8fa7e10b64', true);
+INSERT INTO Cliente VALUES ('83875615840', 'Raissa da Silva e Silva', '2005-09-18', '126116179', 'raissa@email.sql.projeto', '11982322316', 'c786cd2f-7b01-4334-80bb-7b1257f71dd9', true);
+INSERT INTO Cliente VALUES ('61444669834', 'Victor da Silva e Silva', '2005-03-09', '000000171', 'victor@email.sql.projeto', '11948861101', '817174ff-5cd9-4fe6-9a2f-39814baecbfd', true);
+INSERT INTO Cliente VALUES ('73699903036', 'Vitória da Silva e Silva', '2006-04-05', '126116179', 'vitoria@email.sql.projeto', '11977325378', '9b810978-8789-4503-ba58-ea23f59c6a30', true);
+
+INSERT INTO Endereco VALUES (1, '99840660888', "5ª Travessa Oscar Seixas", '186', 'Pirajá', 'Salvador', 'BA', '41290474');
+INSERT INTO Endereco VALUES (2, '24215363837', 'Avenida Alcides Fernandes de Souza', '388', 'Pingo Dágua', 'Betim', 'MG', 32601620);
+INSERT INTO Endereco VALUES (3, '02254935860', 'Avenida Maria Geovanete Pinheiro Borges da Silva', '287', 'Zerão', 'Macapá', 'AP', '68903370');
+INSERT INTO Endereco VALUES (4, '15564187873', 'Rua Monsenhor Vicente', '490', 'Independência', 'Pará de Minas', 'MG', '35660083');
+INSERT INTO Endereco VALUES (5, '22969212803', 'Quadra Quadra 1', '785', 'Setor Leste (Gama)', 'Brasília', 'DF', '72450010');
+INSERT INTO Endereco VALUES (6, '28867554867', 'Travessa São Pedro', '196', 'Vila Mauro Fecury I', 'São Luís', 'MA', '65082625');
+INSERT INTO Endereco VALUES (7, '86089150819', 'Quadra Parque Piauí', '958', 'Parque Piauí', 'Teresina', 'PI', '64025020');
+INSERT INTO Endereco VALUES (8, '81841098817', 'Rua Araticum', '470', 'Cidade Nova', 'Manaus', 'AM', 'Manaus');
+INSERT INTO Endereco VALUES (9, '60254415881', 'Rua Onze', '948', 'Ferradura Mirim', 'Bauru', 'SP', '17031436');
+INSERT INTO Endereco VALUES (10, '36940806865', 'Rua Santo Expedito', '932', 'Samapi', 'Teresina', 'PI', '64058030');
+INSERT INTO Endereco VALUES (11, '83875615840', 'Rua Tufi', '193', 'Irineu Serra', 'Rio Branco', 'AC', '69922250');
+INSERT INTO Endereco VALUES (12, '61444669834', 'Rua Quatro', '509', 'Jardim Marajó', 'Rondonópolis', 'MT', '78720558');
+INSERT INTO Endereco VALUES (13, '73699903036', 'Rua Senador Georgino Avelino', '925', 'Monte Castelo', 'Parnamirim', 'RN', '59146150');
+
+INSERT INTO Funcionario VALUES (1, 'Jessica da Silva e Silva', '2005-12-12', '18534851830', '11967758291', 'jessica@email.sql.projeto', 'Design', '3000.00', '2022-01-01');
+INSERT INTO Funcionario VALUES (2, 'Lorrany da Silva e Silva', '2005-06-28', '46811823874', '11989454145', 'lorrany@email.sql.projeto', 'Gerente de Contas', '10000.00', '2022-01-01');
+INSERT INTO Funcionario VALUES (3, 'Luiza da Silva e Silva', '2004-09-09', '21108543156', '11952266735', 'luiza@email.sql.projeto', 'Admim Banco de Dados', '7000.00', '2022-01-01');
+INSERT INTO Funcionario VALUES (4, 'Maria Helena da Silva e Silva', '2003-11-19', '23840624671', '11942252524', 'maria@email.sql.projeto', 'Gestor', '15000.00', '2022-01-01');
+INSERT INTO Funcionario VALUES (5, 'Nicoly da Silva e Silva', '2005-04-20', '20082746785', '11947998828', 'nicoly@email.sql.projeto', 'Admim Midias Sociais', 7000.00, '2022-01-01');
+
+INSERT INTO Conta VALUES ('92811-0', '99840660888', '2022-06-20', true, '7277.00', '6c2fc09e9926017cadaa3dc51424a969', '5133aa1d673894d5a05b9d83809b9dbe');
+INSERT INTO Conta VALUES ('94580-9', '24215363837', '2022-06-20', true, '6975.00', '22d63d75eb440fed0fd072f9014c5100', 'e77dbaf6759253c7c6d0efc5690369c7');
+INSERT INTO Conta VALUES ('46792-4', '02254935860', '2022-06-20', true, '6436.00', 'c014615365fe910de35d8bf16883fbd6', '9bd5ee6fe55aaeb673025dbcb8f939c1');
+INSERT INTO Conta VALUES ('90383-9', '15564187873', '2022-06-20', true, '9272.00', '0b2b0c4056d02da249a09903de9044b4', 'b8a03c5c15fcfa8dae0b03351eb1742f');
+INSERT INTO Conta VALUES ('63578-7', '22969212803', '2022-06-20', true, '8861.00', 'f8f44ad9ebbd2c062557059ef2422c67', '7d5430cf85f78c4b7aa09813b14bce0d');
+INSERT INTO Conta VALUES ('21279-2', '28867554867', '2022-06-20', true, '2535.00', '12cf82b7a3e24cb45fd52e7f7da60e9b', 'e2eabaf96372e20a9e3d4b5f83723a61');
+INSERT INTO Conta VALUES ('09694-0', '86089150819', '2022-06-20', true, '963.00', 'd0c79329f4c0285079f3b07da691b908', 'faf02b2358de8933f480a146f4d2d98e');
+INSERT INTO Conta VALUES ('10209-7', '81841098817', '2022-06-20', true, '5486.00', '5c6b08c079659fcd402143c10f88de0b', '8744cf92c88433f8cb04a02e6db69a0d');
+INSERT INTO Conta VALUES ('11443-8', '60254415881', '2022-06-20', true, '5278.00', 'd4f9b22e82af8468914be656bc0a29ba', 'de594ef5c314372edec29b93cab9d72e');
+INSERT INTO Conta VALUES ('11496-0', '36940806865', '2022-06-20', true, '3711.00', '34ea62033fd8c60a6ce755ec15ae7a7e', '42a85a0102b0a64d8737ffd2e00a57f4');
+INSERT INTO Conta VALUES ('86844-7', '83875615840', '2022-06-20', true, '7745.00', 'c2b50f091ff336c2ba80d28ddb4be773', '372d3f309fef061977fb2f7ba36d74d2');
+INSERT INTO Conta VALUES ('43570-2', '61444669834', '2022-06-20', true, '8672.00', '5a55ffaa7fee47fccf4a7cce21a45210', '630b7d8dd49a0bab667498f287d68c16');
+INSERT INTO Conta VALUES ('06129-6', '73699903036', '2022-06-20', true, '1642.00', 'b758b1bfe85d4779090836900197c0f8', '3df80af53dce8435cf9ad6c3e7a403fd');
+
+INSERT INTO Saldo VALUES (1, 7477.00, '92811-0', '99840660888');
+INSERT INTO Saldo VALUES (2, 7075.00, '94580-9', '24215363837');
+INSERT INTO Saldo VALUES (3, 6536.00, '46792-4', '02254935860');
+INSERT INTO Saldo VALUES (4, 9372.00, '90383-9', '15564187873');
+INSERT INTO Saldo VALUES (5, 8961.00, '63578-7', '22969212803');
+INSERT INTO Saldo VALUES (6, 2635.00, '21279-2', '28867554867');
+INSERT INTO Saldo VALUES (7, 1063.00, '09694-0', '86089150819');
+INSERT INTO Saldo VALUES (8, 5586.00, '10209-7', '81841098817');
+INSERT INTO Saldo VALUES (9, 5378.00, '11443-8', '60254415881');
+INSERT INTO Saldo VALUES (10, 3811.00, '11496-0', '36940806865');
+INSERT INTO Saldo VALUES (11, 7845.00, '86844-7', '83875615840');
+INSERT INTO Saldo VALUES (12, 8672.00, '43570-2', '61444669834');
+INSERT INTO Saldo VALUES (13, 1742.00, '06129-6', '73699903036');
+
+INSERT INTO Cadastro_chave_pix VALUES (1, '92811-0', 'cpf', '99840660888');
+INSERT INTO Cadastro_chave_pix VALUES (2, '94580-9', 'cpf', '24215363837');
+INSERT INTO Cadastro_chave_pix VALUES (3, '46792-4', 'cpf', '02254935860');
+INSERT INTO Cadastro_chave_pix VALUES (4, '90383-9', 'cpf', '15564187873');
+INSERT INTO Cadastro_chave_pix VALUES (5, '63578-7', 'telefone', '11965895215');
+INSERT INTO Cadastro_chave_pix VALUES (6, '21279-2', 'telefone', '11939393828');
+INSERT INTO Cadastro_chave_pix VALUES (7, '09694-0', 'telefone', '11988315322');
+INSERT INTO Cadastro_chave_pix VALUES (8, '10209-7', 'telefone', '11984640560');
+INSERT INTO Cadastro_chave_pix VALUES (9, '11443-8', 'email', 'matheus@email.sql.projeto');
+INSERT INTO Cadastro_chave_pix VALUES (10, '11496-0', 'email', 'pedro@email.sql.projeto');
+INSERT INTO Cadastro_chave_pix VALUES (11, '86844-7', 'email', 'raissa@email.sql.projeto');
+INSERT INTO Cadastro_chave_pix VALUES (12, '43570-2', 'email', 'victor@email.sql.projeto');
+INSERT INTO Cadastro_chave_pix VALUES (13, '06129-6', 'email', 'vitoria@email.sql.projeto');
+
+INSERT INTO Alteracao_senha VALUES (1, '90383-9' , '74e4b4e1-ee46-45be-a85a-2a6556b7db19', '2022-07-07 21:33:12', true);
+INSERT INTO Alteracao_senha VALUES (2, '63578-7' , 'f367bd30-1e0b-467e-817b-7980e4e65cae', '2022-07-16 18:58:44', true);
+INSERT INTO Alteracao_senha VALUES (3, '21279-2' , '1f61f9ff-754d-4d4b-a156-bbbe7cbe5c8b', '2022-07-22 16:33:48', true);
+INSERT INTO Alteracao_senha VALUES (4, '09694-0' , 'a3808b85-7b65-40fd-a7ba-c491c29bb686', '2022-07-23 02:35:57', true);
+INSERT INTO Alteracao_senha VALUES (5, '86844-7' , 'f1b0f214-84ed-40c7-afb2-b2573f5505f9', '2022-07-25 08:24:17', true);
+INSERT INTO Alteracao_senha VALUES (6, '06129-6' , 'ac8593aa-a49b-4000-b6e6-6df94ae53dd6', '2022-07-30 23:12:03', true);
+
+INSERT INTO Consulta VALUES (1, '92811-0', '2022-06-20 09:20:19');
+INSERT INTO Consulta VALUES (2, '94580-9', '2022-06-20 05:59:41');
+INSERT INTO Consulta VALUES (3, '46792-4', '2022-06-20 13:58:55');
+INSERT INTO Consulta VALUES (4, '90383-9', '2022-06-20 17:29:06');
+INSERT INTO Consulta VALUES (5, '63578-7', '2022-06-20 16:05:54');
+INSERT INTO Consulta VALUES (6, '21279-2', '2022-06-20 07:59:36');
+INSERT INTO Consulta VALUES (7, '09694-0', '2022-06-20 13:44:56');
+INSERT INTO Consulta VALUES (8, '10209-7', '2022-06-20 09:52:15');
+INSERT INTO Consulta VALUES (9, '11443-8', '2022-06-20 19:14:19');
+INSERT INTO Consulta VALUES (10, '11496-0', '2022-06-20 06:40:37');
+INSERT INTO Consulta VALUES (11, '86844-7', '2022-06-20 12:40:23');
+INSERT INTO Consulta VALUES (12, '43570-2', '2022-06-20 33:00:34');
+INSERT INTO Consulta VALUES (13, '06129-6', '2022-06-20 18:44:37');
+
+INSERT INTO Contato VALUES (1, '92811-0', 2);
+INSERT INTO Contato VALUES (2, '94580-9', 2);
+INSERT INTO Contato VALUES (3, '46792-4', 2);
+INSERT INTO Contato VALUES (4, '10209-7', 2);
+INSERT INTO Contato VALUES (5, '11443-8', 2);
+INSERT INTO Contato VALUES (6, '11496-0', 2);
+INSERT INTO Contato VALUES (7, '43570-2', 2);
+
+-- Pagamento conta de telefone
+INSERT INTO Pagamento VALUES (1, '92811-0', 7377.00, 100.00, '2022-07-10 11:32:38', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 7377.00 WHERE numero_conta = '92811-0';
+
+INSERT INTO Pagamento VALUES (2, '94580-9', 6975.00, 100.00, '2022-07-10 16:30:48', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 6975.00 WHERE numero_conta = '94580-9';
+
+INSERT INTO Pagamento VALUES (3, '46792-4', 6436.00, 100.00, '2022-07-10 00:05:39', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 6436.00 WHERE numero_conta = '46792-4';
+
+INSERT INTO Pagamento VALUES (4, '90383-9', 9272.00, 100.00, '2022-07-10 18:58:02', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 9272.00 WHERE numero_conta = '90383-9';
+
+INSERT INTO Pagamento VALUES (5, '63578-7', 8861.00, 100.00, '2022-07-10 23:31:53', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 8861.00 WHERE numero_conta = '63578-7';
+
+INSERT INTO Pagamento VALUES (6, '21279-2', 2535.00, 100.00, '2022-07-10 21:54:18', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 2535.00 WHERE numero_conta = '21279-2';
+
+INSERT INTO Pagamento VALUES (7, '92811-0', 963.00, 100.00, '2022-07-10 13:45:29', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 963.00 WHERE numero_conta = '92811-0';
+
+INSERT INTO Pagamento VALUES (8, '92811-0', 5486.00, 100.00, '2022-07-10 10:33:50', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 5486.00 WHERE numero_conta = '92811-0';
+
+INSERT INTO Pagamento VALUES (9, '10209-7', 5278.00, 100.00, '2022-07-10 15:08:46', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 5278.00 WHERE numero_conta = '10209-7';
+
+INSERT INTO Pagamento VALUES (10, '92811-0', 3711.00, 100.00, '2022-07-10 07:26:44', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 3711.00 WHERE numero_conta = '92811-0';
+
+INSERT INTO Pagamento VALUES (11, '86844-7', 7745.00, 100.00, '2022-07-10 20:25:43', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 7745.00 WHERE numero_conta = '86844-7';
+
+INSERT INTO Pagamento VALUES (12, '43570-2', 8672.00, 100.00, '2022-07-10 02:52:31', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 8672.00 WHERE numero_conta = '43570-2';
+
+INSERT INTO Pagamento VALUES (13, '06129-6', 1742.00, 100.00, '2022-07-10 06:39:34', '2022-07-10', 00.0, false, '00000-x');
+UPDATE Saldo SET saldo = 1742.00 WHERE numero_conta = '06129-6';
+
+SELECT * FROM Funcionario;
+SELECT * FROM Cliente;
+SELECT * FROM Endereco;
+SELECT * FROM Conta;
+SELECT * FROM Cadastro_chave_pix;
+SELECT * FROM Alteracao_senha;
+SELECT * FROM Consulta;
+SELECT * FROM Pagamento;
+SELECT * FROM Saldo;
+SELECT * FROM Contato;
+
+SELECT codigo, nome, email FROM Funcionario 
+ORDER BY salario DESC;
+
+SELECT saldo, numero_conta FROM Saldo 
+ORDER BY saldo DESC;
+
+SELECT uf, cpf_cliente FROM Endereco 
+ORDER BY uf;
+
+SELECT numero_conta, data_emissao FROM Consulta 
+ORDER BY data_emissao DESC;
+
+SELECT Cliente.nome, Cliente.cpf, Conta.numero
+FROM Cliente
+INNER JOIN Conta
+ON Cliente.cpf = Conta.cpf_cliente;
+
+SELECT Endereco.uf as estado, Cliente.nome, Cliente.cpf
+FROM Endereco
+INNER JOIN Cliente
+ON Cliente.cpf = Endereco.cpf_cliente;
+
+SELECT Conta.numero, Saldo.saldo, Saldo.cpf_cliente as cpf
+FROM Conta
+INNER JOIN Saldo
+ON Saldo.cpf_cliente = Conta.cpf_cliente;

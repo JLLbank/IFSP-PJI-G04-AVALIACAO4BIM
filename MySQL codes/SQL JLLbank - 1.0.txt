@@ -1,0 +1,268 @@
+--Equipe #4--
+
+--Jessica | Lorrany | Luiza | Maria Helena | Nicoly--
+
+
+create database MN;
+use MN;
+
+
+create table Pessoa (
+
+	cpf char(11) not null,
+	nome varchar(200) not null,
+	nasc date not null,
+	rg char(9) not null,
+	idade int not null,
+	email varchar(80) not null,
+	telefone char(11) not null,
+	endereco varchar(500) not null,
+	cliente BOOLEAN NOT NULL,
+   
+	primary key (cpf)
+);
+
+
+create table Conta (
+
+    numero char(7) not null,
+    senha varchar(100) not null,
+    ativo boolean not null,
+    saldo double not null,
+    data_criacao date not null,
+    senha_operacao int(4) not null,
+    cpf_conta char(11) not null,
+   
+    primary key (numero),
+    foreign key (cpf_conta) references Pessoa (cpf)
+);
+
+
+create table Transacoes (
+
+	numero_conta CHAR(7) not null,
+	saldo_atual DOUBLE NOT NULL,
+	saldo_apos DOUBLE NOT NULL,
+	valor DOUBLE,
+	data_emissao DATE not null,
+	data_vencimento DATE,
+	tipo VARCHAR(20) NOT NULL,
+	destino BOOLEAN(20), --true para transferencia para o proprio banco/ false para transferencia externa
+   
+	primary key (numero_conta),
+	foreign key (numero_conta) references Conta (numero),
+	foreign key (saldo_atual) references Conta (saldo)
+
+);
+
+
+create table Contato (
+
+	codigo INT NOT NULL,
+	data_inicio DATE NOT NULL,
+	gerente_cpf CHAR(11) NOT NULL,
+	gerente_email VARCHAR(80) NOT NULL,
+	cliente_cpf  CHAR(11) NOT NULL,
+	cliente_conta CHAR(7) NOT NULL,
+
+	primary key (codigo),
+	foreign key (gerente_cpf) references Pessoa (cpf),
+	foreign key (gerente_email) references Pessoa (email),
+	foreign key (cliente_cpf) references Pessoa (cpf),
+	foreign key (cliente_conta) references Conta (numero)
+);
+
+INSERT INTO Pessoa VALUES ('99840660888' , 'Felipe Cardoso Serikyaku', '2004-06-26', '500487777' , 18, 'serikyaku.felipe@aluno.ifsp.edu.br', '11951491478', 'Rua Tenente-Coronel Cardoso, 37', true);
+INSERT INTO Pessoa VALUES ('65624840810' , 'Jessica Bianca Vicente das Virgens' , '2005-12-12', '185348518' , 16 , 'bianca.virgens@aluno.ifsp.edu.br', '11967758291', 'Praça da República, 59', false);
+INSERT INTO Pessoa VALUES ('24215363837' , 'João Guilherme Carvalho Novaes', '2005-10-04', '492534822' , 16 , 'joao.novaes@aluno.ifsp.edu.br', '11991936486', 'Rua dos Carijós, 1237', true);
+INSERT INTO Pessoa VALUES ('02254935860' , 'Julio Rodrigues Soares', '2006-02-07', '168258973' , 16 , 'soares.julio@aluno.ifsp.edu.br', '11979752691', 'Rua Pereira Estéfano, 13', true);
+INSERT INTO Pessoa VALUES ('15564187873' , 'Kauanne Paula de Oliveira', '2004-11-24', '278031985' , 17, 'k.paula@aluno.ifsp.edu.br', '11951633659', 'Avenida Rio Branco, 45', true);
+INSERT INTO Pessoa VALUES ('22969212803' , 'Laís Higuti Leite', '2005-06-26', '464089359' , 17 , 'lais.higuti@aluno.ifsp.edu.br', '11965895215', 'Travessa da CDL, 74', true);
+INSERT INTO Pessoa VALUES ('28867554867' , 'Lie Higuti Leite', '2005-06-26', '326820905' , 17 , 'lie.higuti@aluno.ifsp.edu.br', '11939393828', 'Travessa da CDL, 74', true);
+INSERT INTO Pessoa VALUES ('90569905869' , 'Lorrany Boschesi Nascimento', '2005-06-28', '468118238' , 17 , 'lorrany.b@aluno.ifsp.edu.br', '11989454145', 'Rodovia Raposo Tavares, 612', false);
+INSERT INTO Pessoa VALUES ('06787605862' , 'Luiza Vieira Silva', '2004-09-09', '211085431' , 17 , 'luiza.vieira@aluno.ifsp.edu.br', '11952266735', 'Rua Serra de Bragança, 8', false);
+INSERT INTO Pessoa VALUES ('86089150819' , 'Maria Eduarda Andrade da Silva', '2006-06-28', '175149872' , 16 , 'andrade.maria1@aluno.ifsp.edu.br', '11988315322', 'Avenida Tocantins, 69', true);
+INSERT INTO Pessoa VALUES ('13810060860' , 'Maria Helena Baldan Lemes', '2003-11-19', '238406246' , 18 , 'baldan.lemes@aluno.ifsp.edu.br', '11942252524', 'Rua Maria Luísa do Val Penteado, 1', false);
+INSERT INTO Pessoa VALUES ('81841098817' , 'Matheus Augusto Preto Santana', '2004-02-20', '113883286' , 16 , 'm.preto@aluno.ifsp.edu.br', '11984640560', 'Avenida Desembargador Moreira, 910', true);
+INSERT INTO Pessoa VALUES ('60254415881' , 'Matheus Corcione Saito', '2006-01-22', '113883286' , 16 , 'm.saito@aluno.ifsp.edu.br', '11996838920', 'Rua Arlindo, 120', true);
+INSERT INTO Pessoa VALUES ('43001200804' , 'Nicoly Ferreira da Silva', '2005-04-20', '200827467' , 17 , 'nicoly.ferreira@aluno.ifsp.edu.br', '11947998828', 'Rua Barão de Vitória, 654', false);
+INSERT INTO Pessoa VALUES ('36940806865' , 'Pedro Henrique Barbosa Bolgheroni', '2006-02-17', '509664386' , 16 , 'pedro.bolgheroni@aluno.ifsp.edu.br', '11982470535', 'Rua Arlindo Nogueira, 3211', true);
+INSERT INTO Pessoa VALUES ('83875615840' , 'Raissa Sousa Nunes', '2005-09-18', '126116179' , 16 , 'sousa.n@aluno.ifsp.edu.br', '11982322316', 'Avenida Desembargador Moreira, 28', true);
+INSERT INTO Pessoa VALUES ('61444669834' , 'Victor de Abreu Calcavante Nakanishi', '2005-03-09' , '00.000.017-1' , 17 , 'victor.nakanishi@aluno.ifsp.edu.br', '11948861101', 'Avenida Indianopólis, 302', true);
+INSERT INTO Pessoa VALUES ('61444669834' , 'Vitória Souza Medeiros', '2006-04-05', '126116179' , 16 , 'medeiros.vitoria@aluno.ifsp.edu.br', '11977325378', 'Avenida Paulista, 2180', true);
+
+--https://site112.com/gerador-hash--
+
+INSERT INTO Conta VALUES ('92811-0', '6c2fc09e9926017cadaa3dc51424a969', true, 7277.00,'2022-06-20', '5133aa1d673894d5a05b9d83809b9dbe', '99840660888');
+INSERT INTO Conta VALUES ('18119-8', '73b7e59ed2cf174c522ce37117647ad7', false, 00,'2022-06-20', '0000', '65624840810');
+INSERT INTO Conta VALUES ('94580-9', '22d63d75eb440fed0fd072f9014c5100', true, 6975.00,'2022-06-20', 'e77dbaf6759253c7c6d0efc5690369c7', '24215363837');
+INSERT INTO Conta VALUES ('46792-4', 'c014615365fe910de35d8bf16883fbd6', true, 6436.00,'2022-06-20', '9bd5ee6fe55aaeb673025dbcb8f939c1', '02254935860');
+INSERT INTO Conta VALUES ('90383-9', '0b2b0c4056d02da249a09903de9044b4', true, 9272.00,'2022-06-20', 'b8a03c5c15fcfa8dae0b03351eb1742f', '15564187873');
+INSERT INTO Conta VALUES ('63578-7', 'f8f44ad9ebbd2c062557059ef2422c67', true, 8861.00,'2022-06-20', '7d5430cf85f78c4b7aa09813b14bce0d', '22969212803');
+INSERT INTO Conta VALUES ('21279-2', '12cf82b7a3e24cb45fd52e7f7da60e9b', true, 2535.00,'2022-06-20', 'e2eabaf96372e20a9e3d4b5f83723a61', '28867554867');
+INSERT INTO Conta VALUES ('02786-3', '9768d99bf146454ad06d19c6121e8269', false, 00,'2022-06-20', '0000', '90569905869');
+INSERT INTO Conta VALUES ('81432-5', 'b75f4752a1d6e5664acd5febca6afe7e', false, 00,'2022-06-20', '0000', '06787605862');
+INSERT INTO Conta VALUES ('09694-0', 'd0c79329f4c0285079f3b07da691b908', true, 963.00,'2022-06-20', 'faf02b2358de8933f480a146f4d2d98e', '86089150819');
+INSERT INTO Conta VALUES ('73116-3', 'ac9195f0add66c1fabf782a1185cb760', false, 00,'2022-06-20', '0000', '13810060860');
+INSERT INTO Conta VALUES ('10209-7', '5c6b08c079659fcd402143c10f88de0b', true, 5486.00,'2022-06-20', '8744cf92c88433f8cb04a02e6db69a0d', '81841098817');
+INSERT INTO Conta VALUES ('11443-8', 'd4f9b22e82af8468914be656bc0a29ba', true, 5278.00,'2022-06-20', 'de594ef5c314372edec29b93cab9d72e', '60254415881');
+INSERT INTO Conta VALUES ('61443-9', '2eb7c066c452add9f7e8696f35ba00d7', false, 00,'2022-06-20', '0000', '43001200804');
+INSERT INTO Conta VALUES ('11496-0', '34ea62033fd8c60a6ce755ec15ae7a7e', true, 3711.00,'2022-06-20', '42a85a0102b0a64d8737ffd2e00a57f4', '36940806865');
+INSERT INTO Conta VALUES ('86844-7', 'c2b50f091ff336c2ba80d28ddb4be773', true, 7745.00,'2022-06-20', '372d3f309fef061977fb2f7ba36d74d2', '83875615840');
+INSERT INTO Conta VALUES ('43570-2', '5a55ffaa7fee47fccf4a7cce21a45210', true, 8672.00,'2022-06-20', '630b7d8dd49a0bab667498f287d68c16', '61444669834');
+INSERT INTO Conta VALUES ('06129-6', 'b758b1bfe85d4779090836900197c0f8', true, 1642.00,'2022-06-20', '3df80af53dce8435cf9ad6c3e7a403fd', '61444669834');
+
+ 
+--saldo--
+INSERT INTO Transacoes VALUES ('92811-0', 7277.00, 7277.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('94580-9', 6975.00, 6975.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('46792-4', 6436.00, 6436.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('90383-9', 9272.00, 9272.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('63578-7', 8861.00, 8861.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('21279-2', 2535.00, 2535.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('09694-0', 963.00, 963.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('10209-7', 5486.00, 5486.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('11443-8', 5278.00, 5278.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('11496-0', 3711.00, 3711.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('86844-7', 7745.00, 7745.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('43570-2', 8672.00, 8672.00, 00, '2022-06-20', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('06129-6', 1642.00, 1642.00, 00, '2022-06-20', '', 'saldo', );
+
+
+--boleto (conta de telefone)--
+INSERT INTO Transacoes VALUES ('92811-0', 7277.00, 7206.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 7206.01 WHERE numero = '92811-0';
+
+INSERT INTO Transacoes VALUES ('94580-9', 6975.00, 6909.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 6909.01 WHERE numero = '94580-9';
+
+INSERT INTO Transacoes VALUES ('46792-4', 6436.00, 6365.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 6365.01 WHERE numero = '46792-4';
+
+INSERT INTO Transacoes VALUES ('90383-9', 9272.00, 9201.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 9201.01 WHERE numero = '90383-9';
+
+INSERT INTO Transacoes VALUES ('63578-7', 8861.00, 8790.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 8790.01 WHERE numero = '63578-7';
+
+INSERT INTO Transacoes VALUES ('21279-2', 2535.00, 2464.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 2464.01 WHERE numero = '21279-2';
+
+INSERT INTO Transacoes VALUES ('09694-0', 963.00, 892.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 892.01 WHERE numero = '09694-0';
+
+INSERT INTO Transacoes VALUES ('10209-7', 5486.00, 5415.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 5415.01WHERE numero = '10209-7';
+
+INSERT INTO Transacoes VALUES ('11443-8', 5278.00, 5207.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 5207.01 WHERE numero = '11443-8';
+
+INSERT INTO Transacoes VALUES ('11496-0', 3711.00, 3640.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 3640.01 WHERE numero = '11496-0';
+
+INSERT INTO Transacoes VALUES ('86844-7', 7745.00, 7674.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 7674.01WHERE numero = '86844-7';
+
+INSERT INTO Transacoes VALUES ('43570-2', 8672.00, 8061.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 8061.01 WHERE numero = '43570-2';
+
+INSERT INTO Transacoes VALUES ('06129-6', 1642.00, 1571.01, 70.99, '2022-06-20', '2022-07-01', 'boleto', false);
+UPDATE Conta SET saldo = 1571.01 WHERE numero = '06129-6';
+
+
+--transferencia (mesada da mamãe)--
+INSERT INTO Transacoes VALUES ('92811-0', 7206.01, 7306.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 7306.01 WHERE numero = '92811-0';
+
+INSERT INTO Transacoes VALUES ('94580-9', 6909.01, 7009.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 7009.01 WHERE numero = '94580-9';
+
+INSERT INTO Transacoes VALUES ('46792-4', 6365.01, 6465.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 6465.01 WHERE numero = '46792-4';
+
+INSERT INTO Transacoes VALUES ('90383-9', 9201.01, 9301.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 9301.01 WHERE numero = '90383-9';
+
+INSERT INTO Transacoes VALUES ('63578-7', 8790.01, 8890.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 8890.01 WHERE numero = '63578-7';
+
+INSERT INTO Transacoes VALUES ('21279-2', 2464.01, 2564.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 2564.01 WHERE numero = '21279-2';
+
+INSERT INTO Transacoes VALUES ('09694-0', 892.01, 992.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 992.01 WHERE numero = '09694-0';
+
+INSERT INTO Transacoes VALUES ('10209-7', 5415.01, 5515.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 5515.01 WHERE numero = '10209-7';
+
+INSERT INTO Transacoes VALUES ('11443-8', 5207.01, 5307.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 5307.01 WHERE numero = '11443-8';
+
+INSERT INTO Transacoes VALUES ('11496-0', 3640.01, 3740.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 3740.01 WHERE numero = '11496-0';
+
+INSERT INTO Transacoes VALUES ('86844-7', 7674.01, 7774.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 7774.01 WHERE numero = '86844-7';
+
+INSERT INTO Transacoes VALUES ('43570-2', 8061.01, 8161.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 8161.01 WHERE numero = '43570-2';
+
+INSERT INTO Transacoes VALUES ('06129-6', 1571.01, 1671.01, 100.00, '2022-06-20', '2022-07-02', 'transferencia', true);
+UPDATE Conta SET saldo = 1671.01 WHERE numero = '06129-6';
+
+
+--saldo--
+INSERT INTO Transacoes VALUES ('92811-0', 7306.01, 7306.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('94580-9', 7009.01, 7009.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('46792-4', 6365.01, 6365.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('90383-9', 9301.01, 9301.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('63578-7', 8890.01, 8890.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('21279-2', 2564.01, 2564.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('09694-0', 992.01, 992.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('10209-7', 5515.01, 5515.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('11443-8', 5307.01, 5307.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('11496-0', 3740.01, 3740.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('86844-7', 7774.01, 7774.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('43570-2', 8161.01, 8161.01, 00, '2022-07-02', '', 'saldo', );
+INSERT INTO Transacoes VALUES ('06129-6', 1671.01, 1671.01, 00, '2022-07-02', '', 'saldo', );
+
+
+INSERT INTO Contato VALUES (1, '2022-07-02', '13810060860', 'baldan.lemes@aluno.ifsp.edu.br', '99840660888', '92811-0');
+INSERT INTO Contato VALUES (2, '2022-07-02', '13810060860', 'baldan.lemes@aluno.ifsp.edu.br', '24215363837', '94580-9');
+INSERT INTO Contato VALUES (3, '2022-07-02', '13810060860', 'baldan.lemes@aluno.ifsp.edu.br', '02254935860', '46792-4');
+INSERT INTO Contato VALUES (4, '2022-07-02', '43001200804', 'nicoly.ferreira@aluno.ifsp.edu.br', '81841098817', '10209-7');
+INSERT INTO Contato VALUES (5, '2022-07-02', '43001200804', 'nicoly.ferreira@aluno.ifsp.edu.br', '60254415881', '11443-8');
+INSERT INTO Contato VALUES (6, '2022-07-02', '43001200804', 'nicoly.ferreira@aluno.ifsp.edu.br', '36940806865', '11496-0');
+INSERT INTO Contato VALUES (7, '2022-07-02', '43001200804', 'nicoly.ferreira@aluno.ifsp.edu.br', '61444669834', '43570-2');
+
+
+SELECT * FROM Pessoa;
+SELECT * FROM Conta;
+SELECT * FROM Transacoes;
+SELECT * FROM Contato;
+
+--quantas vezes foram feitas operacoes de consulta de saldo no banco--
+SELECT COUNT(tipo) FROM Transacoes
+WHERE tipo = 'saldo';
+
+--quantas contas existem abertas no banco--
+SELECT COUNT(numero) FROM Conta;
+
+--quantas contas estão inativas no banco--
+SELECT * FROM Conta
+WHERE ativo = false;
+
+--contas ordenadas em ordem decrescente de dinheiro armazenado--
+SELECT saldo, numero FROM Conta 
+ORDER BY saldo DESC;
+
+--ordenando clientes por idade decrescente--
+SELECT * FROM Pessoa
+WHERE cliente = true
+ORDER BY idade DESC;
+
+--donas do banco--
+SELECT * FROM Pessoa
+WHERE cliente = false
+ORDER BY email;
+
